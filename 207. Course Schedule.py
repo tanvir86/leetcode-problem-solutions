@@ -39,3 +39,41 @@ class Solution(object):
             return False
         return True
         
+
+# Using DFS, O(V+E)
+# Runtime: 125 ms, faster than 42.46% of Python online submissions 
+class DFSSolution(object):
+    def canFinish(self, numCourses, prerequisites):
+        """
+        :type numCourses: int
+        :type prerequisites: List[List[int]]
+        :rtype: bool
+        """
+        graph = [[] for i in range(numCourses)]
+        visited = [0 for i in range(numCourses)]
+        
+        for dependency in prerequisites:
+            graph[dependency[1]].append(dependency[0])
+        
+        for i in range(numCourses):
+            if self.isCyclicByDfs(i,graph,visited):
+                return False
+            
+        return True
+    
+    def isCyclicByDfs(self,i,graph,visited):
+        if visited[i] == -1: # sent to direct ancestor node, so cyclic
+            return True
+        
+        if visited[i] == 1: # already visited and not direct ancestor 
+            return False
+        
+        visited[i] = -1 # currently visiting this Node
+        
+        for j in graph[i]:
+            if self.isCyclicByDfs(j,graph,visited):
+                return True
+        
+        visited[i] = 1
+        
+        return False
