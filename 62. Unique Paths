@@ -1,0 +1,49 @@
+#Since the robot can only move right and down, when it arrives at a point, it either arrives from left or above. 
+#If we use dp[i][j] for the number of unique paths to arrive at the point (i, j), then the state equation is 
+#dp[i][j] = dp[i][j - 1] + dp[i - 1][j]. 
+#Moreover, we have the base cases dp[0][j] = dp[i][0] = 1 for all valid i and j
+
+
+class Solution(object):
+    def uniquePaths(self, m, n):
+        """
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+#         if n==1 and m==1:
+#             return 1
+        
+#         self.dp = [[-1 for j in range(n)] for i in range(m)]
+#         self.dp[-1][-1] = 1
+        
+#         count = self.getUniquePath1(0,0,m,n)
+        dp = [1] * n
+        
+        for i in range(1,m):
+            for j in range(1,n):
+                dp[j] = dp[j-1] + dp[j]
+        
+        return dp[-1]
+    
+    def getUniquePath2(self,n,m):
+        dp = [[1 for j in range(n)] for i in range(m)]
+        
+        for i in range(1,m):
+            for j in range(1,n):
+                dp[i][j] = dp[i-1][j] + dp[i][j-1]
+        
+        return dp[-1][-1]
+        
+    def getUniquePath1(self,i,j,m,n):
+        
+        count = 0
+        if j < n-1:
+            count += self.dp[i][j+1]  if self.dp[i][j+1] != -1 else self.getUniquePath(i,j+1,m,n)
+            
+        if i < m-1:
+            count +=  self.dp[i+1][j]  if self.dp[i+1][j] != -1 else self.getUniquePath(i+1,j,m,n)
+        
+        self.dp[i][j] = count
+        
+        return count
