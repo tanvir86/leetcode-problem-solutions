@@ -1,0 +1,36 @@
+#Expalnation
+
+#When we are talking about DP, the first problem comes out to our mind should be: what's the statement of the sub-problem, 
+#whose format should satisfy that if we've solved a sub-problem, it would be helpful for solving the next-step sub-problem, 
+#and, thus, eventually helpful for solving the original problem.
+#Here is the sub-problem we state: denote int_local_max[i] as the max-sub-array-sum that ends with nums[i]. The relationship 
+#between the two steps is simple: 
+#  int_local_max[i + 1] = max (int_local_max[i] + nums[i + 1], nums[i + 1]) 
+#or int_local_max[i + 1] = (int_local_max[i] > 0) ? int_local_max[i] + nums[i + 1] : nums[i + 1].
+
+
+class Solution(object):
+    def maxSubArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+#         localMax,maxSubArray = nums[0], nums[0]
+        
+#         for i in range(1,len(nums)):
+#             localMax = max(localMax + nums[i], nums[i])
+#             maxSubArray = max(maxSubArray, localMax)
+                    
+#         return maxSubArray
+        
+        local, res = float("-inf"), float("-inf")
+        
+        for i in range(len(nums)):
+            if local < 0:
+                local = nums[i]
+            else:
+                local = local + nums[i]
+            
+            if res < local:
+                res = local
+        return res
