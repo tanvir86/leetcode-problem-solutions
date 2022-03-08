@@ -1,0 +1,35 @@
+
+class Solution(object):
+    def numDecodings(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        
+        if s[0] == '0' or (s[-1] == '0' and s[-2] != '1' and s[-2] != '2'):
+            return 0
+        
+        length = len(s)
+        
+        dp = [[0 for j in range(length)] for i in range(2)]
+        
+        for i in range(length):
+            if s[i] != '0': # i is qualified to be first digit
+                if i == 0:
+                    dp[0][i] = 1
+                else:
+                    dp[0][i] = dp[0][i-1] + dp[1][i-1]
+            else:
+                dp[0][i] = 0
+            
+            if i>0 and ( int(s[i-1]) < 2 or (int(s[i-1]) == 2 and int(s[i]) <= 6) ) : # i is qualified for second digit
+                dp[1][i] = dp[0][i-1]
+            else:
+                dp[1][i] = 0
+            
+            if dp[0][i] == 0 and dp[1][i] == 0: # i is not qualified for neither first nor second digit
+                return 0
+                    
+        return dp[0][-1] + dp[1][-1]
+
+    
