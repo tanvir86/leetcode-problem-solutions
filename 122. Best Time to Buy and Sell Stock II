@@ -1,0 +1,27 @@
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        
+        self.sell = ["-inf" for i in range(len(prices))]
+        self.buy = ["-inf" for i in range(len(prices))]
+        
+        self.sell[-1], self.buy[-1] = prices[-1], 0
+        return self.maxBuy(prices,0)
+    
+    def maxBuy(self, prices, i):
+        if self.buy[i] != '-inf':
+            return self.buy[i]
+        
+        self.buy[i] = max(-prices[i] + self.maxSell(prices,i+1), self.maxBuy(prices,i+1))
+        return self.buy[i]
+    
+    def maxSell(self, prices, i):
+        if self.sell[i] != '-inf':
+            return self.sell[i] 
+        
+        self.sell[i] = max(prices[i] + self.maxBuy(prices,i), self.maxSell(prices,i+1))
+        
+        return self.sell[i] 
