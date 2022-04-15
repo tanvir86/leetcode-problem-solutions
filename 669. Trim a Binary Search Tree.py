@@ -69,3 +69,22 @@ class Solution:
                 prev.right = current
         
         return newRoot
+    
+    
+    
+    def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
+        def prune(node: Optional[TreeNode]) -> Optional[TreeNode]:
+            if not node:
+                return None
+            
+            if node.val < low: # all left node deleted. Consider only right node
+                return prune(node.right)
+            elif node.val > high: # all right node delete. Consider only left node
+                return prune(node.left)
+            
+            node.left = prune(node.left)
+            node.right = prune(node.right)
+            
+            return node
+        
+        return prune(root)
