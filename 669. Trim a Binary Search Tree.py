@@ -72,7 +72,7 @@ class Solution:
     
     
     
-    def trimBST(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
+    def trimBSTByRecursion(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
         def prune(node: Optional[TreeNode]) -> Optional[TreeNode]:
             if not node:
                 return None
