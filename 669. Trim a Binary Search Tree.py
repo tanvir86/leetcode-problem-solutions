@@ -88,3 +88,36 @@ class Solution:
             return node
         
         return prune(root)
+ 
+    def trimBSTByStack(self, root: Optional[TreeNode], low: int, high: int) -> Optional[TreeNode]:
+        zero =  TreeNode(-1,None,root)
+        
+        stack = [(root,zero)]
+        
+        while stack:
+            current, parent = stack.pop()
+            
+            if not current:
+                continue
+            
+            if current.val < low:
+                if current.val < parent.val:
+                    parent.left = current.right
+                else:
+                    parent.right = current.right
+                
+                stack.append((current.right,parent))
+                
+            elif current.val > high:
+                if current.val < parent.val:
+                    parent.left = current.left
+                else:
+                    parent.right = current.left
+                    
+                stack.append((current.left,parent))
+                
+            else:
+                stack.append((current.left,current))
+                stack.append((current.right,current))
+                
+        return zero.right
