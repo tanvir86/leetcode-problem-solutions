@@ -25,4 +25,26 @@ class Solution:
             convertToGreaterTree(root,0)
         
         return root
+ 
+    def convertBSTByBFS(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
         
+        stack, carry = [(False, root)], 0
+        
+        while stack:
+            seen, current = stack.pop()
+            
+            if seen or not current.right: # Node encountered for Second time (right node already calculated) OR right node not available
+                carry += current.val
+                current.val = carry
+                
+                if current.left:
+                    stack.append((False,current.left))
+            else: # Node encountered for First time and Right node available
+                stack.append((True,current))
+                stack.append((False,current.right))
+        
+        return root
+                
+
