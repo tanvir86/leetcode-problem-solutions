@@ -6,6 +6,11 @@
 #         self.right = right
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        # Inorder Traversal (left, node, right) will give result in increasing order value (lowest to higest)
+        # So we eill do a inorder traversal
+        # But we do not need to complete the whole traversal as we only need the K'th value.
+        # Wo we will count the traverse node till we reach K
+        
         
         stack, node = [], root
         
@@ -21,4 +26,5 @@ class Solution:
                 return node.val
             
             node = node.right
-        return None
+            
+        return None # we will not reach here
