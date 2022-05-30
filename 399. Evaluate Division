@@ -1,0 +1,63 @@
+from collections import deque
+class Solution:
+    def calcEquation(self, equations: List[List[str]], values: List[float], queries: List[List[str]]) -> List[float]:
+        self.graph = {}
+        self.weight = {}
+        
+        for i in range(len(equations)):
+            [u,v] = equations[i]
+            
+            if u in self.graph:
+                self.graph[u].add(v)
+            else:
+                self.graph[u] = {v}
+            
+            if v in self.graph:
+                self.graph[v].add(u)
+            else:
+                self.graph[v] = {u}
+                
+            self.weight[u+"-"+v] = values[i]
+            self.weight[v+"-"+u] = 1/values[i]
+        
+        ans = []
+        
+        
+        for query in queries:
+            [x,y] = query
+            
+            if x not in self.graph:
+                ans.append(-1)
+                continue
+            
+            if x+"-"+y in self.weight:
+                ans.append(self.weight[x+"-"+y])
+                continue
+            
+            self.visited = set()
+            
+            ans.append(self.bfs(x,y,1) if x != y else 1.0)
+        
+        return ans
+    
+    
+    def bfs(self, x: str,y: str,val: float) -> float:
+        
+        self.visited.add(x)
+        
+        q = deque([(val,x)])
+        
+        while q:
+            (val,x) = q.popleft()
+            
+            if x+"-"+y in self.weight:
+                return val*self.weight[x+"-"+y]
+            
+            for node in self.graph[x]:
+                if node not in self.visited:
+                    newval = val * self.weight[x+"-"+node]
+                    q.append((newval,node))
+                    self.visited.add(node)
+        
+        return -1
+            
