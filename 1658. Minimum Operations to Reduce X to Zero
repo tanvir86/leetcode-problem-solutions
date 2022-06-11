@@ -1,0 +1,30 @@
+class Solution:
+    def minOperations(self, nums: List[int], x: int) -> int:
+        # If we can find sequence with sum (totalSum-x) within array, then the rest of array contain sum = x
+        # for finding minimum length, we will find longest sequence with sum (totalSum-x)
+        
+        totalSum = 0
+        
+        for num in nums:
+            totalSum += num
+            
+        if totalSum == x:
+            return len(nums)
+        if totalSum < x:
+            return -1
+        
+        prefixSum, total, maxLen, target = {0: -1}, 0, 0, totalSum-x
+        
+        for i in range(0,len(nums)):
+            total += nums[i]
+            
+            if total-target in prefixSum:
+                maxLen = max(maxLen, i - prefixSum[total-target])
+            
+            
+            prefixSum[total] = i
+        
+        return -1 if maxLen == 0 else len(nums)-maxLen
+        
+        
+        
